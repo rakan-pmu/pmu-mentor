@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Signup</h1>
+    <form id="signupForm">
+        <input type="text" id="name" placeholder="Name" required><br>
+        <input type="email" id="email" placeholder="Email" required><br>
+        <input type="password" id="password" placeholder="Password" required><br>
+        <select id="role">
+            <option value="mentor">Mentor</option>
+            <option value="mentee">Mentee</option>
+        </select><br>
+        <button type="submit">Sign Up</button>
+    </form>
+    <p>Already have an account? <a href="index.html">Login here</a></p>
+    <script>
+        const signupForm = document.getElementById("signupForm");
+        signupForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const role = document.getElementById("role").value;
+
+            const response = await fetch("/api/auth/signup", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name, email, password, role }),
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+                alert("Account created! Redirecting to login...");
+                window.location.href = "index.html"; // Redirect to login page
+            } else {
+                alert(result.error);
+            }
+        });
+    </script>
+</body>
+</html>
